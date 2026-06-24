@@ -1,0 +1,465 @@
+{
+  "uid": "devnet-prysm-node",
+  "title": "Devnet Prysm \u2014 Node Drilldown (via panda)",
+  "tags": [
+    "panda",
+    "prysm",
+    "devnet"
+  ],
+  "schemaVersion": 39,
+  "refresh": "30s",
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "templating": {
+    "list": [
+      {
+        "name": "network",
+        "type": "query",
+        "label": "Network",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "ethpandaops-devnets"
+        },
+        "query": "label_values(network)",
+        "definition": "label_values(network)",
+        "refresh": 2,
+        "sort": 1,
+        "includeAll": false,
+        "multi": false,
+        "allValue": null,
+        "current": {
+          "selected": true,
+          "text": "glamsterdam-devnet-5",
+          "value": "glamsterdam-devnet-5"
+        },
+        "options": []
+      },
+      {
+        "name": "instance",
+        "type": "query",
+        "label": "Node",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "ethpandaops-devnets"
+        },
+        "query": "label_values(beacon_head_slot{network=\"$network\",consensus_client=\"prysm\"}, instance)",
+        "definition": "label_values(beacon_head_slot{network=\"$network\",consensus_client=\"prysm\"}, instance)",
+        "refresh": 2,
+        "sort": 1,
+        "includeAll": false,
+        "multi": false,
+        "allValue": null,
+        "current": {
+          "selected": true,
+          "text": "glamsterdam-devnet-5-prysm-besu-1",
+          "value": "glamsterdam-devnet-5-prysm-besu-1"
+        },
+        "options": []
+      }
+    ]
+  },
+  "panels": [
+    {
+      "id": 1,
+      "type": "stat",
+      "title": "Head slot",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "ethpandaops-devnets"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 4
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "colorMode": "value",
+        "graphMode": "area"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "ethpandaops-devnets"
+          },
+          "expr": "beacon_head_slot{instance=\"$instance\"}",
+          "instant": true
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "type": "stat",
+      "title": "Behind net head",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "ethpandaops-devnets"
+      },
+      "gridPos": {
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 4
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "colorMode": "value",
+        "graphMode": "area"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "ethpandaops-devnets"
+          },
+          "expr": "max(beacon_head_slot{network=\"$network\"}) - beacon_head_slot{instance=\"$instance\"}",
+          "instant": true
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "type": "stat",
+      "title": "Connected peers",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "ethpandaops-devnets"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 0,
+        "w": 6,
+        "h": 4
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "colorMode": "value",
+        "graphMode": "area"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "ethpandaops-devnets"
+          },
+          "expr": "p2p_peer_count{instance=\"$instance\",state=\"Connected\"}",
+          "instant": true
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "type": "stat",
+      "title": "Bad peers",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "ethpandaops-devnets"
+      },
+      "gridPos": {
+        "x": 18,
+        "y": 0,
+        "w": 6,
+        "h": 4
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "colorMode": "value",
+        "graphMode": "area"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "ethpandaops-devnets"
+          },
+          "expr": "p2p_peer_count{instance=\"$instance\",state=\"Bad\"}",
+          "instant": true
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "type": "timeseries",
+      "title": "Head slot",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "ethpandaops-devnets"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 4,
+        "w": 12,
+        "h": 8
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 1,
+            "fillOpacity": 10,
+            "showPoints": "never"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "ethpandaops-devnets"
+          },
+          "expr": "beacon_head_slot{instance=\"$instance\"}",
+          "legendFormat": "head"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "type": "timeseries",
+      "title": "Peers by state",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "ethpandaops-devnets"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 4,
+        "w": 12,
+        "h": 8
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 1,
+            "fillOpacity": 10,
+            "showPoints": "never"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "ethpandaops-devnets"
+          },
+          "expr": "p2p_peer_count{instance=\"$instance\"}",
+          "legendFormat": "{{state}}"
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "type": "timeseries",
+      "title": "Avg gossip score",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "ethpandaops-devnets"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 12,
+        "w": 12,
+        "h": 8
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 1,
+            "fillOpacity": 10,
+            "showPoints": "never"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "ethpandaops-devnets"
+          },
+          "expr": "connected_libp2p_peers_average_scores{instance=\"$instance\"}",
+          "legendFormat": "score"
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "type": "timeseries",
+      "title": "Attestation inclusion delay (slots)",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "ethpandaops-devnets"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 12,
+        "w": 12,
+        "h": 8
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 1,
+            "fillOpacity": 10,
+            "showPoints": "never"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "ethpandaops-devnets"
+          },
+          "expr": "rate(attestation_inclusion_delay_slots_sum{instance=\"$instance\"}[5m])/rate(attestation_inclusion_delay_slots_count{instance=\"$instance\"}[5m])",
+          "legendFormat": "delay"
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "type": "logs",
+      "title": "Logs (WARN/ERROR/FATAL)",
+      "datasource": {
+        "type": "loki",
+        "uid": "ethpandaops-devnet-logs"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 20,
+        "w": 24,
+        "h": 10
+      },
+      "options": {
+        "showTime": true,
+        "wrapLogMessage": true,
+        "sortOrder": "Descending",
+        "enableLogDetails": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "loki",
+            "uid": "ethpandaops-devnet-logs"
+          },
+          "expr": "{instance=\"$instance\",container=\"beacon\"} |~ \"(WARN|ERROR|FATAL)\"",
+          "queryType": "range"
+        }
+      ]
+    }
+  ]
+}
