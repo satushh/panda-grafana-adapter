@@ -11,6 +11,36 @@ Grafana ──(Prometheus API /api/v1/*)──▶ adapter ──▶ panda promet
 
 One process, two datasources. Read-only. Stores no secrets.
 
+## How it works
+
+Grafana speaks the Prometheus and Loki HTTP APIs; the adapter answers both on one port and translates each request into a `panda` subcommand:
+
+```
+  Grafana  (Prometheus + Loki datasources, one base URL)
+     │                                          │
+     │ GET /api/v1/*  (metrics)                 │ GET /loki/api/v1/*  (logs)
+     ▼                                          ▼
+  ═══════════════  panda_grafana_adapter.py  ·  HTTP :9119 (stdlib)  ═══════════════
+     route each request by URL path prefix:
+
+       /api/v1/query · query_range · labels · label/<n>/values · status/buildinfo
+            └─▶ run_prom()   ──▶  panda prometheus <datasource> <promql> -o json
+
+       /loki/api/v1/query_range · query · labels · label/<n>/values
+            └─▶ parse_logql()  {selector} |= "x" |~ "re"
+                LogQL  ──▶  ClickHouse SQL (WHERE / match())
+            └─▶ run_ch()     ──▶  panda clickhouse query-raw <ch> "<sql>"
+  ══════════════════════════════════════════════════════════════════════════════════
+     │  one short-lived `panda` subprocess per request
+     ▼
+  panda  (CLI)  —  OIDC auth + automatic token refresh
+     │
+     ▼
+  panda-server  (Docker, :2480)  ──▶  ethPandaOps cloud
+                                        ├─ VictoriaMetrics       → metrics
+                                        └─ ClickHouse otel_logs  → logs
+```
+
 ## Why
 
 `panda` is a CLI; Grafana wants HTTP datasources. Pointing Grafana straight at the ethPandaOps proxy would mean copying a bearer token that **expires every ~24h**. Going through `panda` means its auto-refreshing auth is reused — set up once, keeps working.
