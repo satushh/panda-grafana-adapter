@@ -61,32 +61,7 @@ python3 panda_grafana_adapter.py --port 9119
 
 Run it **on the host** where `panda` is authenticated (it shells out to `panda`).
 
-### Keep it running (macOS launchd)
-
-`~/Library/LaunchAgents/com.ethpandaops.panda-grafana-adapter.plist`:
-
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<plist version="1.0"><dict>
-  <key>Label</key><string>com.ethpandaops.panda-grafana-adapter</string>
-  <key>ProgramArguments</key><array>
-    <string>/opt/homebrew/bin/python3</string>
-    <string>/Users/you/panda-grafana-adapter/panda_grafana_adapter.py</string>
-    <string>--port</string><string>9119</string>
-  </array>
-  <key>EnvironmentVariables</key><dict>
-    <key>PATH</key><string>/path/to/panda/dir:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin</string>
-  </dict>
-  <key>RunAtLoad</key><true/><key>KeepAlive</key><true/>
-  <key>StandardErrorPath</key><string>/tmp/panda-grafana-adapter.log</string>
-  <key>StandardOutPath</key><string>/tmp/panda-grafana-adapter.log</string>
-</dict></plist>
-```
-```bash
-launchctl load ~/Library/LaunchAgents/com.ethpandaops.panda-grafana-adapter.plist
-launchctl kickstart -k gui/$(id -u)/com.ethpandaops.panda-grafana-adapter   # restart after edits
-```
-The `PATH` must include the dir containing `panda` (`dirname $(which panda)`).
+It's an ordinary long-running process — daemonize it however you prefer (a process manager, `nohup`, a container). `panda` just needs to be on its `PATH`.
 
 ## Wire into Grafana
 
