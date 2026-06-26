@@ -1,0 +1,1751 @@
+{
+  "uid": "devnet6-all",
+  "title": "Devnet-6 \u2014 Comprehensive (via panda)",
+  "tags": [
+    "panda",
+    "devnet",
+    "glamsterdam",
+    "devnet-6"
+  ],
+  "schemaVersion": 39,
+  "editable": true,
+  "timezone": "browser",
+  "refresh": "30s",
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "templating": {
+    "list": [
+      {
+        "name": "consensus_client",
+        "type": "query",
+        "label": "CL client",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "ethpandaops-devnets"
+        },
+        "query": "label_values(beacon_head_slot{network=\"glamsterdam-devnet-6\"}, consensus_client)",
+        "definition": "label_values(beacon_head_slot{network=\"glamsterdam-devnet-6\"}, consensus_client)",
+        "refresh": 2,
+        "sort": 1,
+        "includeAll": true,
+        "multi": true,
+        "allValue": ".*",
+        "current": {
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "options": []
+      },
+      {
+        "name": "instance",
+        "type": "query",
+        "label": "Node",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "ethpandaops-devnets"
+        },
+        "query": "label_values(beacon_head_slot{network=\"glamsterdam-devnet-6\"}, instance)",
+        "definition": "label_values(beacon_head_slot{network=\"glamsterdam-devnet-6\"}, instance)",
+        "refresh": 2,
+        "sort": 1,
+        "includeAll": false,
+        "multi": false,
+        "current": {
+          "selected": true,
+          "text": "glamsterdam-devnet-6-prysm-besu-1",
+          "value": "glamsterdam-devnet-6-prysm-besu-1"
+        },
+        "options": []
+      },
+      {
+        "name": "level",
+        "type": "custom",
+        "label": "Log level",
+        "query": "Warnings & errors : \\]\\s+(WARN|ERROR|FATAL|PANIC|DPANIC),Info and above : \\]\\s+(INFO|WARN|ERROR|FATAL|PANIC|DPANIC),All (incl. debug) : .",
+        "includeAll": false,
+        "multi": false,
+        "current": {
+          "selected": true,
+          "text": "Warnings & errors",
+          "value": "\\]\\s+(WARN|ERROR|FATAL|PANIC|DPANIC)"
+        },
+        "options": [
+          {
+            "text": "Warnings & errors",
+            "value": "\\]\\s+(WARN|ERROR|FATAL|PANIC|DPANIC)",
+            "selected": true
+          },
+          {
+            "text": "Info and above",
+            "value": "\\]\\s+(INFO|WARN|ERROR|FATAL|PANIC|DPANIC)",
+            "selected": false
+          },
+          {
+            "text": "All (incl. debug)",
+            "value": ".",
+            "selected": false
+          }
+        ]
+      }
+    ]
+  },
+  "panels": [
+    {
+      "id": 1,
+      "type": "row",
+      "title": "Overview",
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "panels": []
+    },
+    {
+      "id": 2,
+      "type": "stat",
+      "title": "Head slot",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "ethpandaops-devnets"
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 0,
+        "y": 1
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "colorMode": "value",
+        "graphMode": "area"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "ethpandaops-devnets"
+          },
+          "expr": "max(beacon_head_slot{network=\"glamsterdam-devnet-6\"})",
+          "instant": true
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "type": "stat",
+      "title": "Finalized epoch",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "ethpandaops-devnets"
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 4,
+        "y": 1
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "colorMode": "value",
+        "graphMode": "area"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "ethpandaops-devnets"
+          },
+          "expr": "max(beacon_finalized_epoch{network=\"glamsterdam-devnet-6\"})",
+          "instant": true
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "type": "stat",
+      "title": "Active nodes",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "ethpandaops-devnets"
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 8,
+        "y": 1
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "colorMode": "value",
+        "graphMode": "area"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "ethpandaops-devnets"
+          },
+          "expr": "count(beacon_head_slot{network=\"glamsterdam-devnet-6\"})",
+          "instant": true
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "type": "stat",
+      "title": "Target participation",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "ethpandaops-devnets"
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 12,
+        "y": 1
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "colorMode": "value",
+        "graphMode": "area"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "ethpandaops-devnets"
+          },
+          "expr": "100*max(beacon_prev_epoch_target_gwei{network=\"glamsterdam-devnet-6\"})/max(beacon_prev_epoch_active_gwei{network=\"glamsterdam-devnet-6\"})",
+          "instant": true
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "type": "stat",
+      "title": "Active validators",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "ethpandaops-devnets"
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 16,
+        "y": 1
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "colorMode": "value",
+        "graphMode": "area"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "ethpandaops-devnets"
+          },
+          "expr": "max(beacon_current_active_validators{network=\"glamsterdam-devnet-6\",consensus_client=\"prysm\"})",
+          "instant": true
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "type": "stat",
+      "title": "Reorgs (1h)",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "ethpandaops-devnets"
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 20,
+        "y": 1
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "colorMode": "value",
+        "graphMode": "area"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "ethpandaops-devnets"
+          },
+          "expr": "sum(increase(beacon_reorgs_total{network=\"glamsterdam-devnet-6\",consensus_client=\"prysm\"}[1h]))",
+          "instant": true
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "type": "row",
+      "title": "Fleet health (all clients)",
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 5
+      },
+      "panels": []
+    },
+    {
+      "id": 9,
+      "type": "timeseries",
+      "title": "Head slot by client",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "ethpandaops-devnets"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 6
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 1,
+            "fillOpacity": 10,
+            "showPoints": "never"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "ethpandaops-devnets"
+          },
+          "expr": "max by(consensus_client)(beacon_head_slot{network=\"glamsterdam-devnet-6\"})",
+          "legendFormat": "{{consensus_client}}"
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "type": "timeseries",
+      "title": "Slots behind net head (by node)",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "ethpandaops-devnets"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 6
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 1,
+            "fillOpacity": 10,
+            "showPoints": "never"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "ethpandaops-devnets"
+          },
+          "expr": "max(beacon_head_slot{network=\"glamsterdam-devnet-6\"}) - beacon_head_slot{network=\"glamsterdam-devnet-6\",consensus_client=~\"$consensus_client\"}",
+          "legendFormat": "{{instance}}"
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "type": "timeseries",
+      "title": "Finalized epoch",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "ethpandaops-devnets"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 14
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 1,
+            "fillOpacity": 10,
+            "showPoints": "never"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "ethpandaops-devnets"
+          },
+          "expr": "max(beacon_finalized_epoch{network=\"glamsterdam-devnet-6\"})",
+          "legendFormat": "finalized"
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "type": "timeseries",
+      "title": "Nodes reporting (by client)",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "ethpandaops-devnets"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 14
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 1,
+            "fillOpacity": 10,
+            "showPoints": "never"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "ethpandaops-devnets"
+          },
+          "expr": "count by(consensus_client)(beacon_head_slot{network=\"glamsterdam-devnet-6\"})",
+          "legendFormat": "{{consensus_client}}"
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "type": "row",
+      "title": "Participation & attestation",
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 22
+      },
+      "panels": []
+    },
+    {
+      "id": 14,
+      "type": "timeseries",
+      "title": "Epoch participation",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "ethpandaops-devnets"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 23
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent",
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 1,
+            "fillOpacity": 10,
+            "showPoints": "never"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "ethpandaops-devnets"
+          },
+          "expr": "100*max(beacon_prev_epoch_target_gwei{network=\"glamsterdam-devnet-6\"})/max(beacon_prev_epoch_active_gwei{network=\"glamsterdam-devnet-6\"})",
+          "legendFormat": "target"
+        },
+        {
+          "refId": "B",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "ethpandaops-devnets"
+          },
+          "expr": "100*max(beacon_prev_epoch_head_gwei{network=\"glamsterdam-devnet-6\"})/max(beacon_prev_epoch_active_gwei{network=\"glamsterdam-devnet-6\"})",
+          "legendFormat": "head"
+        },
+        {
+          "refId": "C",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "ethpandaops-devnets"
+          },
+          "expr": "100*max(beacon_prev_epoch_source_gwei{network=\"glamsterdam-devnet-6\"})/max(beacon_prev_epoch_active_gwei{network=\"glamsterdam-devnet-6\"})",
+          "legendFormat": "source"
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "type": "timeseries",
+      "title": "Attestation inclusion delay (avg, slots)",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "ethpandaops-devnets"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 23
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 1,
+            "fillOpacity": 10,
+            "showPoints": "never"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "ethpandaops-devnets"
+          },
+          "expr": "sum(rate(attestation_inclusion_delay_slots_sum{network=\"glamsterdam-devnet-6\",consensus_client=\"prysm\"}[5m]))/sum(rate(attestation_inclusion_delay_slots_count{network=\"glamsterdam-devnet-6\",consensus_client=\"prysm\"}[5m]))",
+          "legendFormat": "avg delay"
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "type": "timeseries",
+      "title": "Reorgs rate",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "ethpandaops-devnets"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 31
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 1,
+            "fillOpacity": 10,
+            "showPoints": "never"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "ethpandaops-devnets"
+          },
+          "expr": "sum(rate(beacon_reorgs_total{network=\"glamsterdam-devnet-6\",consensus_client=\"prysm\"}[5m]))",
+          "legendFormat": "reorgs/s"
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "type": "timeseries",
+      "title": "Active validators",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "ethpandaops-devnets"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 31
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 1,
+            "fillOpacity": 10,
+            "showPoints": "never"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "ethpandaops-devnets"
+          },
+          "expr": "max(beacon_current_active_validators{network=\"glamsterdam-devnet-6\",consensus_client=\"prysm\"})",
+          "legendFormat": "validators"
+        }
+      ]
+    },
+    {
+      "id": 18,
+      "type": "row",
+      "title": "ePBS \u2014 builder & payloads (EIP-7732)",
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 39
+      },
+      "panels": []
+    },
+    {
+      "id": 19,
+      "type": "timeseries",
+      "title": "Execution payload source (rate by source)",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "ethpandaops-devnets"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 40
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 1,
+            "fillOpacity": 10,
+            "showPoints": "never"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "ethpandaops-devnets"
+          },
+          "expr": "sum by(source)(rate(beacon_execution_payload_source_total{network=\"glamsterdam-devnet-6\"}[5m]))",
+          "legendFormat": "{{source}}"
+        }
+      ]
+    },
+    {
+      "id": 20,
+      "type": "timeseries",
+      "title": "Execution payload bids",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "ethpandaops-devnets"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 40
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 1,
+            "fillOpacity": 10,
+            "showPoints": "never"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "ethpandaops-devnets"
+          },
+          "expr": "sum(rate(beacon_execution_payload_bids_received_total{network=\"glamsterdam-devnet-6\"}[5m]))",
+          "legendFormat": "received"
+        },
+        {
+          "refId": "B",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "ethpandaops-devnets"
+          },
+          "expr": "sum(rate(beacon_execution_payload_bids_dropped_total{network=\"glamsterdam-devnet-6\"}[5m]))",
+          "legendFormat": "dropped"
+        }
+      ]
+    },
+    {
+      "id": 21,
+      "type": "timeseries",
+      "title": "Builder blocks missed (rate)",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "ethpandaops-devnets"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 48
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 1,
+            "fillOpacity": 10,
+            "showPoints": "never"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "ethpandaops-devnets"
+          },
+          "expr": "sum(rate(beacon_block_builder_missed_with_fallback_total{network=\"glamsterdam-devnet-6\"}[5m]))",
+          "legendFormat": "missed (fallback)"
+        },
+        {
+          "refId": "B",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "ethpandaops-devnets"
+          },
+          "expr": "sum(rate(beacon_block_builder_missed_without_fallback_total{network=\"glamsterdam-devnet-6\"}[5m]))",
+          "legendFormat": "missed (no fallback)"
+        }
+      ]
+    },
+    {
+      "id": 22,
+      "type": "timeseries",
+      "title": "PTC payload-attestation pool size",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "ethpandaops-devnets"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 48
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 1,
+            "fillOpacity": 10,
+            "showPoints": "never"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "ethpandaops-devnets"
+          },
+          "expr": "max(beacon_payload_attestation_pool_size{network=\"glamsterdam-devnet-6\"})",
+          "legendFormat": "pool size"
+        }
+      ]
+    },
+    {
+      "id": 23,
+      "type": "timeseries",
+      "title": "Execution payload envelopes valid (rate)",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "ethpandaops-devnets"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 56
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 1,
+            "fillOpacity": 10,
+            "showPoints": "never"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "ethpandaops-devnets"
+          },
+          "expr": "sum(rate(beacon_execution_payload_envelope_valid_total{network=\"glamsterdam-devnet-6\"}[5m]))",
+          "legendFormat": "valid"
+        }
+      ]
+    },
+    {
+      "id": 24,
+      "type": "timeseries",
+      "title": "Fork-choice payload nodes",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "ethpandaops-devnets"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 56
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 1,
+            "fillOpacity": 10,
+            "showPoints": "never"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "ethpandaops-devnets"
+          },
+          "expr": "max(forkchoice_payload_empty_node_count{network=\"glamsterdam-devnet-6\",consensus_client=\"prysm\"})",
+          "legendFormat": "empty"
+        },
+        {
+          "refId": "B",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "ethpandaops-devnets"
+          },
+          "expr": "max(forkchoice_payload_full_node_count{network=\"glamsterdam-devnet-6\",consensus_client=\"prysm\"})",
+          "legendFormat": "full"
+        }
+      ]
+    },
+    {
+      "id": 25,
+      "type": "row",
+      "title": "Networking",
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 64
+      },
+      "panels": []
+    },
+    {
+      "id": 26,
+      "type": "timeseries",
+      "title": "Connected peers (by node)",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "ethpandaops-devnets"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 0,
+        "y": 65
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 1,
+            "fillOpacity": 10,
+            "showPoints": "never"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "ethpandaops-devnets"
+          },
+          "expr": "p2p_peer_count{network=\"glamsterdam-devnet-6\",consensus_client=~\"$consensus_client\",state=\"Connected\"}",
+          "legendFormat": "{{instance}}"
+        }
+      ]
+    },
+    {
+      "id": 27,
+      "type": "timeseries",
+      "title": "Bad peers (by node)",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "ethpandaops-devnets"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 8,
+        "y": 65
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 1,
+            "fillOpacity": 10,
+            "showPoints": "never"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "ethpandaops-devnets"
+          },
+          "expr": "p2p_peer_count{network=\"glamsterdam-devnet-6\",consensus_client=~\"$consensus_client\",state=\"Bad\"}",
+          "legendFormat": "{{instance}}"
+        }
+      ]
+    },
+    {
+      "id": 28,
+      "type": "timeseries",
+      "title": "Avg gossip score (by node)",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "ethpandaops-devnets"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 16,
+        "y": 65
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 1,
+            "fillOpacity": 10,
+            "showPoints": "never"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "ethpandaops-devnets"
+          },
+          "expr": "connected_libp2p_peers_average_scores{network=\"glamsterdam-devnet-6\",consensus_client=~\"$consensus_client\"}",
+          "legendFormat": "{{instance}}"
+        }
+      ]
+    },
+    {
+      "id": 29,
+      "type": "row",
+      "title": "Per-node drilldown \u2014 $instance",
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 73
+      },
+      "panels": []
+    },
+    {
+      "id": 30,
+      "type": "stat",
+      "title": "Head slot",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "ethpandaops-devnets"
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 0,
+        "y": 74
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "colorMode": "value",
+        "graphMode": "area"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "ethpandaops-devnets"
+          },
+          "expr": "beacon_head_slot{instance=\"$instance\"}",
+          "instant": true
+        }
+      ]
+    },
+    {
+      "id": 31,
+      "type": "stat",
+      "title": "Behind net head",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "ethpandaops-devnets"
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 6,
+        "y": 74
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "colorMode": "value",
+        "graphMode": "area"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "ethpandaops-devnets"
+          },
+          "expr": "max(beacon_head_slot{network=\"glamsterdam-devnet-6\"}) - beacon_head_slot{instance=\"$instance\"}",
+          "instant": true
+        }
+      ]
+    },
+    {
+      "id": 32,
+      "type": "stat",
+      "title": "Connected peers",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "ethpandaops-devnets"
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 12,
+        "y": 74
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "colorMode": "value",
+        "graphMode": "area"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "ethpandaops-devnets"
+          },
+          "expr": "p2p_peer_count{instance=\"$instance\",state=\"Connected\"}",
+          "instant": true
+        }
+      ]
+    },
+    {
+      "id": 33,
+      "type": "stat",
+      "title": "Bad peers",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "ethpandaops-devnets"
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 18,
+        "y": 74
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "colorMode": "value",
+        "graphMode": "area"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "ethpandaops-devnets"
+          },
+          "expr": "p2p_peer_count{instance=\"$instance\",state=\"Bad\"}",
+          "instant": true
+        }
+      ]
+    },
+    {
+      "id": 34,
+      "type": "timeseries",
+      "title": "Head slot",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "ethpandaops-devnets"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 78
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 1,
+            "fillOpacity": 10,
+            "showPoints": "never"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "ethpandaops-devnets"
+          },
+          "expr": "beacon_head_slot{instance=\"$instance\"}",
+          "legendFormat": "head"
+        }
+      ]
+    },
+    {
+      "id": 35,
+      "type": "timeseries",
+      "title": "Peers by state",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "ethpandaops-devnets"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 78
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 1,
+            "fillOpacity": 10,
+            "showPoints": "never"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "ethpandaops-devnets"
+          },
+          "expr": "p2p_peer_count{instance=\"$instance\"}",
+          "legendFormat": "{{state}}"
+        }
+      ]
+    },
+    {
+      "id": 36,
+      "type": "timeseries",
+      "title": "Avg gossip score",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "ethpandaops-devnets"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 86
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 1,
+            "fillOpacity": 10,
+            "showPoints": "never"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "ethpandaops-devnets"
+          },
+          "expr": "connected_libp2p_peers_average_scores{instance=\"$instance\"}",
+          "legendFormat": "score"
+        }
+      ]
+    },
+    {
+      "id": 37,
+      "type": "timeseries",
+      "title": "Attestation inclusion delay (slots)",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "ethpandaops-devnets"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 86
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 1,
+            "fillOpacity": 10,
+            "showPoints": "never"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "ethpandaops-devnets"
+          },
+          "expr": "rate(attestation_inclusion_delay_slots_sum{instance=\"$instance\"}[5m])/rate(attestation_inclusion_delay_slots_count{instance=\"$instance\"}[5m])",
+          "legendFormat": "delay"
+        }
+      ]
+    },
+    {
+      "id": 38,
+      "type": "row",
+      "title": "Logs \u2014 $instance",
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 94
+      },
+      "panels": []
+    },
+    {
+      "id": 39,
+      "type": "logs",
+      "title": "Beacon logs",
+      "datasource": {
+        "type": "loki",
+        "uid": "ethpandaops-devnet-logs"
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 24,
+        "x": 0,
+        "y": 95
+      },
+      "options": {
+        "showTime": true,
+        "wrapLogMessage": true,
+        "sortOrder": "Descending",
+        "enableLogDetails": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "loki",
+            "uid": "ethpandaops-devnet-logs"
+          },
+          "expr": "{instance=\"$instance\",container=\"beacon\"} |~ \"$level\"",
+          "queryType": "range"
+        }
+      ],
+      "description": "Defaults to warnings & errors. Use the 'Log level' dropdown at the top to include info/debug. Hard/info filters anchor on the Prysm '[ts] LEVEL' token; for non-Prysm nodes choose 'All'."
+    }
+  ]
+}

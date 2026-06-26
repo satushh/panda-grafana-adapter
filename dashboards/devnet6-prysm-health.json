@@ -1,6 +1,6 @@
 {
-  "uid": "devnet5-prysm",
-  "title": "Devnet-5 Prysm \u2014 Fleet Health (via panda)",
+  "uid": "devnet6-prysm",
+  "title": "Devnet-6 Prysm \u2014 Fleet Health (via panda)",
   "tags": [
     "panda",
     "prysm",
@@ -54,7 +54,7 @@
             "type": "prometheus",
             "uid": "ethpandaops-devnets"
           },
-          "expr": "max(beacon_head_slot{network=\"glamsterdam-devnet-5\",consensus_client=\"prysm\"})",
+          "expr": "max(beacon_head_slot{network=\"glamsterdam-devnet-6\",consensus_client=\"prysm\"})",
           "instant": true
         }
       ]
@@ -98,7 +98,7 @@
             "type": "prometheus",
             "uid": "ethpandaops-devnets"
           },
-          "expr": "max(beacon_finalized_epoch{network=\"glamsterdam-devnet-5\",consensus_client=\"prysm\"})",
+          "expr": "max(beacon_finalized_epoch{network=\"glamsterdam-devnet-6\",consensus_client=\"prysm\"})",
           "instant": true
         }
       ]
@@ -142,7 +142,7 @@
             "type": "prometheus",
             "uid": "ethpandaops-devnets"
           },
-          "expr": "100*max(beacon_prev_epoch_target_gwei{network=\"glamsterdam-devnet-5\",consensus_client=\"prysm\"})/max(beacon_prev_epoch_active_gwei{network=\"glamsterdam-devnet-5\",consensus_client=\"prysm\"})",
+          "expr": "100*max(beacon_prev_epoch_target_gwei{network=\"glamsterdam-devnet-6\",consensus_client=\"prysm\"})/max(beacon_prev_epoch_active_gwei{network=\"glamsterdam-devnet-6\",consensus_client=\"prysm\"})",
           "instant": true
         }
       ]
@@ -186,7 +186,7 @@
             "type": "prometheus",
             "uid": "ethpandaops-devnets"
           },
-          "expr": "count(beacon_head_slot{network=\"glamsterdam-devnet-5\",consensus_client=\"prysm\"})",
+          "expr": "count(beacon_head_slot{network=\"glamsterdam-devnet-6\",consensus_client=\"prysm\"})",
           "instant": true
         }
       ]
@@ -237,7 +237,7 @@
             "type": "prometheus",
             "uid": "ethpandaops-devnets"
           },
-          "expr": "beacon_head_slot{network=\"glamsterdam-devnet-5\",consensus_client=\"prysm\"}",
+          "expr": "beacon_head_slot{network=\"glamsterdam-devnet-6\",consensus_client=\"prysm\"}",
           "legendFormat": "{{instance}}"
         }
       ]
@@ -288,7 +288,7 @@
             "type": "prometheus",
             "uid": "ethpandaops-devnets"
           },
-          "expr": "max(beacon_head_slot{network=\"glamsterdam-devnet-5\",consensus_client=\"prysm\"}) - beacon_head_slot{network=\"glamsterdam-devnet-5\",consensus_client=\"prysm\"}",
+          "expr": "max(beacon_head_slot{network=\"glamsterdam-devnet-6\",consensus_client=\"prysm\"}) - beacon_head_slot{network=\"glamsterdam-devnet-6\",consensus_client=\"prysm\"}",
           "legendFormat": "{{instance}}"
         }
       ]
@@ -339,7 +339,7 @@
             "type": "prometheus",
             "uid": "ethpandaops-devnets"
           },
-          "expr": "p2p_peer_count{network=\"glamsterdam-devnet-5\",consensus_client=\"prysm\",state=\"Connected\"}",
+          "expr": "p2p_peer_count{network=\"glamsterdam-devnet-6\",consensus_client=\"prysm\",state=\"Connected\"}",
           "legendFormat": "{{instance}}"
         }
       ]
@@ -390,7 +390,7 @@
             "type": "prometheus",
             "uid": "ethpandaops-devnets"
           },
-          "expr": "p2p_peer_count{network=\"glamsterdam-devnet-5\",consensus_client=\"prysm\",state=\"Bad\"}",
+          "expr": "p2p_peer_count{network=\"glamsterdam-devnet-6\",consensus_client=\"prysm\",state=\"Bad\"}",
           "legendFormat": "{{instance}}"
         }
       ]
@@ -441,7 +441,7 @@
             "type": "prometheus",
             "uid": "ethpandaops-devnets"
           },
-          "expr": "connected_libp2p_peers_average_scores{network=\"glamsterdam-devnet-5\",consensus_client=\"prysm\"}",
+          "expr": "connected_libp2p_peers_average_scores{network=\"glamsterdam-devnet-6\",consensus_client=\"prysm\"}",
           "legendFormat": "{{instance}}"
         }
       ]

@@ -90,7 +90,8 @@ Scope queries with labels: `network`, `consensus_client`, `execution_client`, `i
 ## Example dashboards
 
 `dashboards/` (also provisionable in Grafana):
-- **devnet5-prysm-health** — fixed Prysm fleet view (head, finalized, participation, slots-behind, peers, gossip score)
+- **devnet6-comprehensive** — everything for one devnet on a single page (overview, fleet health, participation, ePBS builder/payloads, networking, per-node drilldown, logs)
+- **devnet6-prysm-health** — fixed Prysm fleet view (head, finalized, participation, slots-behind, peers, gossip score)
 - **devnet-fleet-cl-health** — parameterized by `$network` + multi-select `$consensus_client`, with cross-client comparison
 - **devnet-prysm-node** — per-node drilldown (`$network`/`$instance`) **with an embedded logs panel**
 - **devnet-prysm-att-fc** — attestation participation, inclusion delay, reorgs, forkchoice empty/full nodes

@@ -31,8 +31,8 @@
         "allValue": null,
         "current": {
           "selected": true,
-          "text": "glamsterdam-devnet-5",
-          "value": "glamsterdam-devnet-5"
+          "text": "glamsterdam-devnet-6",
+          "value": "glamsterdam-devnet-6"
         },
         "options": []
       },
@@ -53,8 +53,8 @@
         "allValue": null,
         "current": {
           "selected": true,
-          "text": "glamsterdam-devnet-5-prysm-besu-1",
-          "value": "glamsterdam-devnet-5-prysm-besu-1"
+          "text": "glamsterdam-devnet-6-prysm-besu-1",
+          "value": "glamsterdam-devnet-6-prysm-besu-1"
         },
         "options": []
       }
