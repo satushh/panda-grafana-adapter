@@ -68,28 +68,28 @@
         "name": "level",
         "type": "custom",
         "label": "Log level",
-        "query": "Warnings & errors : \\]\\s+(WARN|ERROR|FATAL|PANIC|DPANIC),Info and above : \\]\\s+(INFO|WARN|ERROR|FATAL|PANIC|DPANIC),All (incl. debug) : .",
+        "query": "Warnings & errors : WARN|ERROR|FATAL,Info and above : INFO|WARN|ERROR|FATAL|NOTICE,All (incl. debug) : .*",
         "includeAll": false,
         "multi": false,
         "current": {
           "selected": true,
           "text": "Warnings & errors",
-          "value": "\\]\\s+(WARN|ERROR|FATAL|PANIC|DPANIC)"
+          "value": "WARN|ERROR|FATAL"
         },
         "options": [
           {
             "text": "Warnings & errors",
-            "value": "\\]\\s+(WARN|ERROR|FATAL|PANIC|DPANIC)",
+            "value": "WARN|ERROR|FATAL",
             "selected": true
           },
           {
             "text": "Info and above",
-            "value": "\\]\\s+(INFO|WARN|ERROR|FATAL|PANIC|DPANIC)",
+            "value": "INFO|WARN|ERROR|FATAL|NOTICE",
             "selected": false
           },
           {
             "text": "All (incl. debug)",
-            "value": ".",
+            "value": ".*",
             "selected": false
           }
         ]
@@ -1704,7 +1704,7 @@
     {
       "id": 38,
       "type": "row",
-      "title": "Logs \u2014 $instance",
+      "title": "Problems \u2014 all clients (WARN/ERROR/FATAL)",
       "collapsed": false,
       "gridPos": {
         "h": 1,
@@ -1717,7 +1717,7 @@
     {
       "id": 39,
       "type": "logs",
-      "title": "Beacon logs",
+      "title": "Fleet problems",
       "datasource": {
         "type": "loki",
         "uid": "ethpandaops-devnet-logs"
@@ -1741,11 +1741,57 @@
             "type": "loki",
             "uid": "ethpandaops-devnet-logs"
           },
-          "expr": "{instance=\"$instance\",container=\"beacon\"} |~ \"$level\"",
+          "expr": "{network=\"glamsterdam-devnet-6\",container=~\"beacon|execution\",level=~\"WARN|ERROR|FATAL\"} != \"Served eth_sendRawTransaction\"",
           "queryType": "range"
         }
       ],
-      "description": "Defaults to warnings & errors. Use the 'Log level' dropdown at the top to include info/debug. Hard/info filters anchor on the Prysm '[ts] LEVEL' token; for non-Prysm nodes choose 'All'."
+      "description": "Every WARN/ERROR/FATAL across all CL + EL clients on glamsterdam-devnet-6 \u2014 level is normalised per client (lighthouse/teku/prysm/nimbus/lodestar, geth/besu/ethrex). Stream labels show host/container/cl/level. The noisy geth 'Served eth_sendRawTransaction' WARN is excluded; append more `!= \"...\"` filters to taste."
+    },
+    {
+      "id": 40,
+      "type": "row",
+      "title": "Logs \u2014 $instance",
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 107
+      },
+      "panels": []
+    },
+    {
+      "id": 41,
+      "type": "logs",
+      "title": "Node logs",
+      "datasource": {
+        "type": "loki",
+        "uid": "ethpandaops-devnet-logs"
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 24,
+        "x": 0,
+        "y": 108
+      },
+      "options": {
+        "showTime": true,
+        "wrapLogMessage": true,
+        "sortOrder": "Descending",
+        "enableLogDetails": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "loki",
+            "uid": "ethpandaops-devnet-logs"
+          },
+          "expr": "{instance=\"$instance\",container=\"beacon\",level=~\"$level\"}",
+          "queryType": "range"
+        }
+      ],
+      "description": "Beacon logs for the selected node, filtered by the 'Log level' dropdown (defaults to warnings & errors). Works for any client via the normalised level label."
     }
   ]
 }

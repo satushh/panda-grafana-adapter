@@ -115,6 +115,42 @@ def norm_ts(s):
 # ----------------------------------------------------------------------------
 # Loki: otel_logs mapping + LogQL subset
 # ----------------------------------------------------------------------------
+# ANSI-stripped Body; defined as a WITH-alias `clean` in every query that needs it.
+CLEAN = r"replaceRegexpAll(Body, '\x1b\[[0-9;]*m', '')"
+BODY_CLEAN = "clean"  # WITH-alias for the ANSI-stripped Body (defined per query)
+
+# Normalised log level across all clients. SeverityText is unreliable (empty for
+# besu/lodestar, scraped-from-message for nimbus), so parse the level token from
+# each client's own line format (the client is known via ResourceAttributes), then
+# fold abbreviations (WRN/ERRO/DBG/CRIT/...) into canonical WARN/ERROR/FATAL/INFO/…
+_LVL_RAW = (
+    "multiIf("
+    "ResourceAttributes['container.name']='execution' AND ResourceAttributes['ethereum_el']='besu',"
+    r" extract(clean, '\|\s*(TRACE|DEBUG|INFO|WARN|ERROR|FATAL)\s*\|'),"
+    "ResourceAttributes['container.name']='execution' AND ResourceAttributes['ethereum_el'] IN ('ethrex','reth'),"
+    r" extract(clean, 'Z\s+(TRACE|DEBUG|INFO|WARN|ERROR|FATAL)'),"
+    "ResourceAttributes['container.name']='execution',"
+    r" extract(clean, '^\s*(TRACE|DEBUG|INFO|WARN|ERROR|CRIT|EROR)'),"
+    "ResourceAttributes['ethereum_cl']='nimbus',"
+    r" extract(clean, '^\s*(TRC|DBG|INF|NTC|WRN|ERR|FAT|NOT)'),"
+    "ResourceAttributes['ethereum_cl']='lighthouse',"
+    r" extract(clean, '\d\d:\d\d:\d\d\.\d+\s+(TRCE|DEBG|INFO|WARN|ERRO|CRIT)'),"
+    "ResourceAttributes['ethereum_cl']='prysm',"
+    r" extract(clean, '\]\s+(TRACE|DEBUG|INFO|WARN|ERROR|FATAL|PANIC|DPANIC)'),"
+    "ResourceAttributes['ethereum_cl']='teku',"
+    r" extract(clean, '\.\d+\s+(TRACE|DEBUG|INFO|WARN|ERROR|FATAL)\s+-'),"
+    "ResourceAttributes['ethereum_cl']='lodestar',"
+    r" extract(clean, '(?i)\]\s+(info|warn|error|debug|verbose|trace|silly)'),"
+    r" extract(clean, '(?i)level=(\w+)'))"
+)
+LEVEL_EXPR = (
+    "transform(upper(" + _LVL_RAW + "), "
+    "['WARN','WRN','WARNING','ERROR','ERRO','ERR','EROR','FATAL','FATA','FAT','CRIT','CRITICAL','PANIC','DPANIC',"
+    "'INFO','INF','DEBUG','DEBG','DBG','TRACE','TRC','TRCE','NOTICE','NTC','NOT'], "
+    "['WARN','WARN','WARN','ERROR','ERROR','ERROR','ERROR','FATAL','FATAL','FATAL','FATAL','FATAL','FATAL','FATAL',"
+    "'INFO','INFO','DEBUG','DEBUG','DEBUG','TRACE','TRACE','TRACE','NOTICE','NOTICE','NOTICE'], 'unknown')"
+)
+
 # Loki label name -> ClickHouse column/expression on external.otel_logs
 LOKI_LABELS = {
     "network":   "ResourceAttributes['network']",
@@ -123,12 +159,11 @@ LOKI_LABELS = {
     "cl":        "ResourceAttributes['ethereum_cl']",
     "el":        "ResourceAttributes['ethereum_el']",
     "service":   "ServiceName",
-    "level":     "SeverityText",
+    "level":     LEVEL_EXPR,   # normalised, multi-client (parsed per format above)
     # synthetic label matching the Prometheus `instance` (network-host), so a
     # dashboard can drive metric + log panels off one $instance variable.
     "instance":  "concat(ResourceAttributes['network'], '-', ResourceAttributes['host.name'])",
 }
-BODY_CLEAN = "clean"  # WITH-alias for the ANSI-stripped Body (defined per query)
 
 
 def _sqlstr(v):
@@ -225,14 +260,10 @@ def loki_query(P, instant=False):
     limit = min(int(P.get("limit") or 1000), 5000)
     order = "ASC" if P.get("direction") == "forward" else "DESC"
     where = loki_where(matchers, filters, start_ns, end_ns)
-    # level: prefer OTEL SeverityText; Prysm leaves it empty, so fall back to the
-    # uppercase token after the timestamp bracket in the line (DEBUG/INFO/WARN/...).
-    lvl = (r"if(SeverityText != '', SeverityText, "
-           r"if(extract(clean, '\]\s+([A-Z]{3,6})') != '', extract(clean, '\]\s+([A-Z]{3,6})'), 'unknown'))")
-    sql = (r"WITH replaceRegexpAll(Body, '\x1b\[[0-9;]*m', '') AS clean "
+    sql = (f"WITH {CLEAN} AS clean "
            f"SELECT toString(toUnixTimestamp64Nano(Timestamp)) AS ts, clean AS line, "
            f"ResourceAttributes['host.name'] AS host, ResourceAttributes['container.name'] AS container, "
-           f"ResourceAttributes['ethereum_cl'] AS cl, {lvl} AS level "
+           f"ResourceAttributes['ethereum_cl'] AS cl, {LEVEL_EXPR} AS level "
            f"FROM {CFG['table']} WHERE {where} ORDER BY Timestamp {order} LIMIT {limit}")
     ok, res = run_ch(sql)
     if not ok:
@@ -261,7 +292,7 @@ def loki_label_values(name, P):
         return True, {"status": "success", "data": []}
     end_ns = to_ns(P.get("end"), default=time.time_ns())
     start_ns = to_ns(P.get("start"), default=end_ns - 3600 * 10**9)
-    sql = (f"SELECT DISTINCT {col} AS v FROM {CFG['table']} "
+    sql = (f"WITH {CLEAN} AS clean SELECT DISTINCT {col} AS v FROM {CFG['table']} "
            f"WHERE Timestamp >= fromUnixTimestamp64Nano({int(start_ns)}) "
            f"AND Timestamp <= fromUnixTimestamp64Nano({int(end_ns)}) AND {col} != '' "
            f"ORDER BY v LIMIT 2000")
