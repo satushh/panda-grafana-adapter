@@ -93,6 +93,31 @@
             "selected": false
           }
         ]
+      },
+      {
+        "name": "problem",
+        "type": "custom",
+        "label": "Problems",
+        "query": "Errors only : ERROR|FATAL,Warnings & errors : WARN|ERROR|FATAL",
+        "includeAll": false,
+        "multi": false,
+        "current": {
+          "selected": true,
+          "text": "Errors only",
+          "value": "ERROR|FATAL"
+        },
+        "options": [
+          {
+            "text": "Errors only",
+            "value": "ERROR|FATAL",
+            "selected": true
+          },
+          {
+            "text": "Warnings & errors",
+            "value": "WARN|ERROR|FATAL",
+            "selected": false
+          }
+        ]
       }
     ]
   },
@@ -1704,7 +1729,7 @@
     {
       "id": 38,
       "type": "row",
-      "title": "Problems \u2014 all clients (WARN/ERROR/FATAL)",
+      "title": "Problems \u2014 all clients",
       "collapsed": false,
       "gridPos": {
         "h": 1,
@@ -1741,11 +1766,11 @@
             "type": "loki",
             "uid": "ethpandaops-devnet-logs"
           },
-          "expr": "{network=\"glamsterdam-devnet-6\",container=~\"beacon|execution\",level=~\"WARN|ERROR|FATAL\"} != \"Served eth_sendRawTransaction\"",
+          "expr": "{network=\"glamsterdam-devnet-6\",container=~\"beacon|execution\",level=~\"$problem\"} != \"Served eth_sendRawTransaction\"",
           "queryType": "range"
         }
       ],
-      "description": "Every WARN/ERROR/FATAL across all CL + EL clients on glamsterdam-devnet-6 \u2014 level is normalised per client (lighthouse/teku/prysm/nimbus/lodestar, geth/besu/ethrex). Stream labels show host/container/cl/level. The noisy geth 'Served eth_sendRawTransaction' WARN is excluded; append more `!= \"...\"` filters to taste."
+      "description": "Problems across all CL + EL clients on glamsterdam-devnet-6 \u2014 level is normalised per client (lighthouse/teku/prysm/nimbus/lodestar, geth/besu/ethrex). Use the 'Problems' dropdown at the top to switch between Errors only (default) and Warnings & errors. Stream labels show host/container/cl/level; the noisy geth 'Served eth_sendRawTransaction' WARN is excluded."
     },
     {
       "id": 40,
